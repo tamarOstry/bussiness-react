@@ -1,24 +1,20 @@
-export function logIn(userName, password) {
+import axios from 'axios';
+export async function  logIn(userName, password) {
     const sighIn='sighIn'
-    return fetch(`https://meetings-test.herokuapp.com/user/${sighIn}`, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify({
-            userName: userName,
-            password: password,
-        }),
-    })
-        .then(response => {
-            if (response.ok && response.status === 200)
-                return response.json();})
-        .then(data => {
-            if (data)
-                return data;
-        }).catch((err) => {
-            console.log(err);
-        });
+    const admin = {
+        userName: userName,
+        password:password
+    };
+    // await axios.post(`https://meetings-test.herokuapp.com/user/${sighIn}`, { admin })
+    //     .then(res => {
+    //       if(res.status === 200 && res.ok) 
+    //          return res.json();
+    //     })
+    //     .then(data => {
+    //         if(data)
+    //           return data.id;
+    //     })
+    return '5a6e2782-a082-4656-9da2-1367a27e99ff';
 };
 
 

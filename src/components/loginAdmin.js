@@ -1,14 +1,16 @@
 import '../css/login.css'
 import '../api/adminLogin'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from "react";
 import { logIn } from "../api/adminLogin";
 import { Register } from "../api/adminLogin";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 
 export function LoginAdmin() {
-	const history = useHistory();
+	// const history = useHistory();
+	let navigate = useNavigate();	
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [userName, setUserName] = useState("");
@@ -20,16 +22,13 @@ export function LoginAdmin() {
 	async function onLogIn() {
 		await logIn(userName, password).then(data => {
 			if (data) {
-				alert("connection successfully")
-				history.push("/adminDetails");
+				alert("connection successfully");
+				navigate('/businessDetails', { state: { id: data } })
 			}
 			else {
 				alert("admin not defined  you need to application")
 			}
-
 		});
-		//if(nurse)  
-		//setNurse(nurse)
 	}
 
 	async function onRegister() {

@@ -1,7 +1,7 @@
 
 export function HomeUser() {
     return (
-        <div class="div">
+        <div className="div">
            <h1>hellossssssssss</h1>
         </div>
     )
