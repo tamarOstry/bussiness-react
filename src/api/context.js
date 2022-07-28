@@ -1,22 +1,21 @@
 import React, { useState, useEffect, createContext } from "react";
-import { getBusinessByAdminId,getServicesByBussinessId } from "./getBussinessByAdminId";
+import { getBusinessByAdminId,getServicesByBusinessId } from "./getBussinessByAdminId";
 
 export const context = createContext([]);
 
-export const Context = (props) => {
+export const BusinessContext = (props) => {
     const [business, setBusiness] = useState([]);
+
     useEffect(() => {
         getBusiness();
     }, []);
 
-    const getBusiness = () => {
+// props.adminId
+    const getBusiness = (props) => {
         try {
-            getBusinessByAdminId(props.adminId).then((business) => {
+            getBusinessByAdminId('8a3807c0-af72-47e3-9369-745a7ae9889a').then((business) => {
                 console.log(business);
-                getServicesByBussinessId(business.id).then((businessDetails) => {
-                    console.log(businessDetails);
-                    setBusiness([...businessDetails]);
-                });
+                setBusiness(business);
             });
         } catch (err) {
             console.log(err);
@@ -27,4 +26,29 @@ export const Context = (props) => {
         {props.children}
     </context.Provider>
 }
+
+
+// export const ServicesContext = (props) => {
+//     const [services, setServices] = useState([]);
+
+//     useEffect(() => {
+//         getServices();
+//     }, []);
+
+// // props.adminId
+//     const getServices = (props) => {
+//         try {
+//             getServicesByBusinessId(props.businessId).then((services) => {
+//                 console.log(services);
+//                 setServices(services);
+//             });
+//         } catch (err) {
+//             console.log(err);
+//         }
+//     }
+
+//     return <context.Provider value={services}>
+//         {props.children}
+//     </context.Provider>
+// }
 
