@@ -1,7 +1,7 @@
 import React from 'react';
-import { HomeUser } from './components/homeUser';
+import  HomeUser  from './components/homeUser';
 import { LoginAdmin } from './components/loginAdmin';
-import { BusinessDetails } from './components/businessDetails';
+import  BusinessDetails  from './components/businessDetails';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
   return (
