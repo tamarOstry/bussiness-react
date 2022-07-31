@@ -1,65 +1,97 @@
-import EditIcon from '@mui/icons-material/Edit';
-import * as React from 'react';
-import { useEffect } from 'react'
-import { useState } from "react";
-import { useLocation } from 'react-router-dom';
-import { useContext } from 'react';
-import { context } from "../api/context";
-import { BusinessContext } from "../api/context";
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import React, { useEffect } from "react"
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
-import {editBusinessDetails} from '../api/business'
+import Typography from '@mui/material/Typography';
+import { Navigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import axios from 'axios';
+import { maxHeight, positions } from "@mui/system";
 
-export function BusinessDetails() {
-    const [openService, setOpenService] = useState(true);
-    const [businessOwners, setBusinessOwners] = useState("");
-    const [businessName, setBusinessName] = useState("");
+export default function BusinessDetails() {
 
     const location = useLocation();
     const form = location.state;
+    const [listServices, setListServices] = React.useState([]);
 
-    const businessDetails = useContext(context);
-    // const servicesDetails = useContext(context.ServiceContext(businessDetails.id));
+    useEffect(() => {
+        debugger
+        getAllServices(form.myBusiness.id);
+    }, []);
 
-
-    const handleClick = () => {
-        setOpenService(!openService);
-    };
-
-    const saveBusinessDetails=()=>{
-        businessDetails.ownersName=businessOwners;
-        businessDetails.businessName=businessName;
-        editBusinessDetails(businessDetails)
+    const getAllServices = async (id) => {
+        try {
+            axios.get(`https://meetings-test.herokuapp.com/service?business_id=${id}`)
+            .then((res) => {
+                console.log(res.data);
+                setListServices(res.data);
+            })
+        } 
+        catch (err) {
+            console.log(err);
+        }
     }
-
-    {/*             
-   <BusinessContext.Consumer adminId='8a3807c0-af72-47e3-9369-745a7ae9889a'>
-      {({theme}) => (
-        setBusiness
-      )}
-    </BusinessContext.Consumer> */}
     return (
-        <div className="div" style={{ backgroundImage: 'url(' + businessDetails.image + ')' }}>
-            <h1>hi to your business</h1>
-            <TextField
-                id="outlined-helperText"
-                label="owners"
-                defaultValue={businessDetails && businessDetails.ownersName}
-                onChange={(e)=>setBusinessOwners(e.target.value)}
-            />
-            <TextField
-                id="outlined-helperText"
-                label="business name"
-                defaultValue="Default Value"
-                onChange={(e)=>setBusinessName(e.target.value)}
-            />
-            <Stack direction="row" spacing={2}>
-                <Button color="secondary" onClick={saveBusinessDetails}>save the changes</Button>
-            </Stack>
-        </div>
-        //      <Fab color="secondary" aria-label="edit">
-        //      <EditIcon onClick={edit} />
-        //  </Fab>
-    )
+        <>
+            <Card sx={{ maxWidth: 2000, alignItems: 'center', marginTop: 2 }}>
+                <CardMedia
+                    component="img"
+                    height="230"
+                    image={form.myBusiness?.img}
+                    alt="ha ha ha"
+                />
+                <CardContent>
+                    <Typography sx={{ textAlign: 'center' }} gutterBottom variant="h3" component="div">
+                        {form.myBusiness.businessName}
+
+                    </Typography>
+                    <Typography sx={{ textAlign: 'center' }} gutterBottom variant="h5" component="div">
+                        {form.myBusiness.ownersName}
+                    </Typography>
+                    <Grid container spacing={{ xs: 2, md: 3, }}>
+                        {
+                        listServices === [] ? <p>no services</p> : listServices.map((services) => (
+                            <Grid services xs={2} sm={3} md={3} key={services.name}>
+                                <Card direction="row" sx={{ maxWidth: 345, minWidth: 345, maxHeight:340,minHeight:340 }}>
+                                    <CardContent >
+                                        <Typography variant="h5" component="div" color="primary" textAlign="center">
+                                            {services.name}
+                                        </Typography>
+                                        <Typography variant="h6" component="div" textAlign="center">
+                                            num of meetings: {services.numOfMeetings}
+                                        </Typography>
+                                        <Typography variant="h6" component="div" textAlign="center">
+                                            duration: {services.durationOfMeeting}
+                                        </Typography>
+                                        <Typography variant="h6" component="div" textAlign="center">
+                                            cost: {services.cost}
+                                        </Typography>
+                                        <Typography variant="h6" component="div" textAlign="center">
+                                            place of meetings:<br />
+                                           {services.address.city} {services.address.street} {services.address.number} ,
+                                        </Typography>
+                                        <Typography variant="h6" component="div" textAlign="center">
+                                        opening between: {services.OpeningHours}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            <br />
+                                        </Typography>
+                                        <Typography  textAlign="center">
+                                        <Button  variant="outlined" size='large'>Register </Button>
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+
+
+                            </Grid>
+                        ))}
+                    </Grid>
+                </CardContent>
+                <div style={{ marginRight: 'left' }}></div>
+            </Card>
+        </>
+    );
 }
+
