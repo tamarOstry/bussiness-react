@@ -23,18 +23,69 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { editBusinessDetails } from '../api/admin'
+import { editBusinessDetails } from '../api/admin';
+import { withStyles } from '@material-ui/core/styles';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import CloseIcon from '@material-ui/icons/Close';
+import { TextField } from '@material-ui/core';
+import { Stack } from '@mui/material';
 import '../css/business.css'
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Business','Services', 'Meetings' ];
+//nav
+const pages = ['Business', 'Services', 'Meetings'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+//dialog
+const styles = (theme) => ({
+    root: {
+        margin: 0,
+        padding: theme.spacing(2),
+    },
+    closeButton: {
+        position: 'absolute',
+        right: theme.spacing(1),
+        top: theme.spacing(1),
+        color: theme.palette.grey[500],
+    },
+});
+
+const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+        <MuiDialogTitle disableTypography className={classes.root} {...other}>
+            <Typography variant="h6">{children}</Typography>
+            {onClose ? (
+                <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </MuiDialogTitle>
+    );
+});
+
+const DialogContent = withStyles((theme) => ({
+    root: {
+        padding: theme.spacing(2),
+    },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles((theme) => ({
+    root: {
+        margin: 0,
+        padding: theme.spacing(1),
+    },
+}))(MuiDialogActions);
 
 export function BusinessDetails() {
     const [businessOwners, setBusinessOwners] = useState("");
     const [businessName, setBusinessName] = useState("");
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const [open, setOpen] = React.useState(false);
     let navigate = useNavigate();
 
     const location = useLocation();
@@ -45,15 +96,30 @@ export function BusinessDetails() {
     // businessName=businessDetails.businessName;
     // const servicesDetails = useContext(context.ServiceContext(businessDetails.id));
 
+    //dialog
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = async(fromSave) => {  
+        if(fromSave)
+        {
+            if(businessName!=="")
+               businessDetails.businessName=businessName;
+            if(businessOwners!=="")
+               businessDetails.ownersName=businessOwners;
+            const updateBusiness =await editBusinessDetails(businessDetails);
+            if(updateBusiness!==undefined)
+                alert('save successfully');
+        }
+        setOpen(false);
+    };
+
+
     const saveBusinessDetails = () => {
         businessDetails.ownersName = 'tamar&esty';
         // businessDetails.ownersName = businessOwners;
         businessDetails.businessName = businessName;
         editBusinessDetails(businessDetails)
-    }
-
-    const edit=()=>{
-
     }
 
     const myServices = () => {
@@ -222,9 +288,39 @@ export function BusinessDetails() {
                 </CardContent>
                 <CardActions>
                     <Fab color="secondary" aria-label="edit">
-                        <EditIcon onClick={()=>edit()} />
+                        <EditIcon variant="outlined" color="primary" onClick={handleClickOpen} />
                     </Fab>
                 </CardActions>
+                <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+                    <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                        edit my business details
+                    </DialogTitle>
+                    <DialogContent dividers>
+                        <Typography gutterBottom>
+                            <TextField
+                                id="filled-helperText"
+                                defaultValue={businessDetails && businessDetails.ownersName}
+                                // value={businessDetails && businessDetails.ownersName}
+                                helperText="ownersName"
+                                variant="filled"
+                                onChange={(e) => setBusinessOwners(e.target.value)}
+                            />
+                            <TextField
+                                id="filled-helperText"
+                                defaultValue={businessDetails && businessDetails.businessName}
+                                // value={businessDetails && businessDetails.businessName}
+                                helperText="businessName"
+                                variant="filled"
+                                onChange={(e) => setBusinessName(e.target.value)}
+                            />
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={()=>handleClose(true)} color="primary">
+                            Save changes
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Card>
         </div>
 
@@ -233,27 +329,7 @@ export function BusinessDetails() {
 
 
 
-    //     <TextField
-    //     id="filled-helperText"
-    //     // label="Helper text"
-    //     defaultValue={businessDetails && businessDetails.ownersName}
-    //     value={businessDetails && businessDetails.ownersName}
-    //     helperText="ownersName"
-    //     variant="filled"
-    //     onChange={(e) => setBusinessOwners(e.target.value)}
-    // />
-    // <TextField
-    //     id="filled-helperText"
-    //     // label="Helper text"
-    //     defaultValue={businessDetails && businessDetails.businessName}
-    //     value={businessDetails && businessDetails.businessName}
-    //     helperText="businessName"
-    //     variant="filled"
-    //     onChange={(e) => setBusinessName(e.target.value)}
-    // />
-    // <Stack direction="row" spacing={2}>
-    //     <Button className="save" color="secondary" onClick={saveBusinessDetails}>save changes</Button>
-    //     <Button className="save" color="secondary" onClick={myServices}>my services</Button>
-    // </Stack>
-
+{/* <Stack direction="row" spacing={2}>
+<Button className="save" color="secondary" onClick={saveBusinessDetails}>save changes</Button>
+</Stack> */}
 
