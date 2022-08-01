@@ -62,7 +62,7 @@ export default function HomeUser() {
             </CardContent>
             <CardActions>
               {/* <Button size="small">Register for services</Button> */}
-              <Button variant="contained"  onClick={() => navigate('/businessDetails',{state:{myBusiness:business}})}  >Register for services</Button>
+              <Button variant="contained"  onClick={() => navigate('/businessServices',{state:{myBusiness:business}})}  >Register for services</Button>
             </CardActions>
           </Card>
 
