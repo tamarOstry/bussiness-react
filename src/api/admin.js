@@ -32,9 +32,19 @@ export async function getMeetingsByBusinessId(businessId) {
 export const editBusinessDetails=async(businessDetails)=> {
   try {
     debugger
-      const res= await axios.get(`https://meetings-test.herokuapp.com/business/${businessDetails.id}`,{"business":businessDetails});
+      const res= await axios.put(`https://meetings-test.herokuapp.com/business/${businessDetails.id}`,{"business":businessDetails});
       return res.data;
   } catch (err) {
       console.log(err)
     }
   }
+
+  export const deleteBusinessService=async(serviceId)=> {
+    try {
+      debugger
+        const res= await axios.delete(`https://meetings-test.herokuapp.com/service/${serviceId}`);
+        return res.data;
+    } catch (err) {
+        console.log(err)
+      }
+    }
