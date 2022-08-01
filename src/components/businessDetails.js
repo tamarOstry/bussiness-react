@@ -255,3 +255,5 @@ export function BusinessDetails() {
     //     <Button className="save" color="secondary" onClick={saveBusinessDetails}>save changes</Button>
     //     <Button className="save" color="secondary" onClick={myServices}>my services</Button>
     // </Stack>
+
+
