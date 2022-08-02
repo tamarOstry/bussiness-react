@@ -11,6 +11,7 @@ import axios from 'axios';
 import { maxHeight, positions } from "@mui/system";
 
 export default function BusinessServices() {
+	const navigate = useNavigate();	
 
     const location = useLocation();
     const form = location.state;
@@ -79,7 +80,7 @@ export default function BusinessServices() {
                                             <br />
                                         </Typography>
                                         <Typography  textAlign="center">
-                                        <Button  variant="outlined" size='large'>Register </Button>
+                                        <Button  variant="outlined" size='large'  onClick={() => navigate('/register',{state:{myServices:services}})}>Register </Button>
                                         </Typography>
                                     </CardContent>
                                 </Card>

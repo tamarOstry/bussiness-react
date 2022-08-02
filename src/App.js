@@ -1,13 +1,14 @@
 import React from 'react';
 import  HomeUser  from './components/homeUser';
 import { LoginAdmin } from './components/loginAdmin';
-import  BusinessDetails  from './components/businessDetails';
+import  {BusinessDetails}  from './components/businessDetails';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { BusinessContext } from './api/businessContext';
 import { ServicesContext } from './api/serviceContext';
 import {Services} from './components/services';
 import {Meetings} from './components/meetings';
-import {BusinessServices} from './components/businessServices';
+import BusinessServices from './components/businessServices';
+import { Register } from './components/register';
 function App() {
   return (
     <div>
@@ -19,6 +20,8 @@ function App() {
             <Route path='/services' element={<ServicesContext><Services/></ServicesContext>} />
             <Route path='/meetings' element={<Meetings/>} />
             <Route path='/businessServices' element={<BusinessServices/>} />
+            <Route path='/register' element={<Register/>} />
+
           </Routes>
         </Router>
     </div>
