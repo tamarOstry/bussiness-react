@@ -31,7 +31,6 @@ export async function getMeetingsByBusinessId(businessId) {
 
 export const editBusinessDetails=async(businessDetails)=> {
   try {
-    debugger
       const res= await axios.put(`https://meetings-test.herokuapp.com/business/${businessDetails.id}`,{"business":businessDetails});
       return res.data;
   } catch (err) {
