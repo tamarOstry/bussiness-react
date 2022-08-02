@@ -7,7 +7,8 @@ import { BusinessContext } from './api/businessContext';
 import { ServicesContext } from './api/serviceContext';
 import {Services} from './components/services';
 import {Meetings} from './components/meetings';
-import {BusinessServices} from './components/businessServices';
+import BusinessServices from './components/businessServices';
+import { Register } from './components/register';
 function App() {
   return (
     <div>
@@ -19,6 +20,8 @@ function App() {
             <Route path='/services' element={<ServicesContext><Services/></ServicesContext>} />
             <Route path='/meetings' element={<Meetings/>} />
             <Route path='/businessServices' element={<BusinessServices/>} />
+            <Route path='/register' element={<Register/>} />
+
           </Routes>
         </Router>
     </div>

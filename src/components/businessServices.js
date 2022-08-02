@@ -26,6 +26,7 @@ import { DialogActions } from '@mui/material';
 
 export function BusinessServices() {
     const location = useLocation();
+    const navigate = useNavigate();	
     const form = location.state;
     const [listServices, setListServices] = React.useState([]);
     const [open, setOpen] = React.useState(false);
