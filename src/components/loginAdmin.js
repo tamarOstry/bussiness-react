@@ -4,37 +4,42 @@ import React, { useEffect } from 'react'
 import { useState } from "react";
 import { logIn } from "../api/adminLogin";
 import { Register } from "../api/adminLogin";
-// import { useHistory } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
-export function LoginAdmin() {
-	// const history = useHistory();
-	let navigate = useNavigate();	
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
+export function LoginAdmin(props) {
+	let navigate = useNavigate();
 	const [userName, setUserName] = useState("");
 	const [password, setPassword] = useState("");
-	const [email, setEmail] = useState("");
-	const [phonNumber, setPhoneNumber] = useState("");
-
 
 	async function onLogIn() {
-		await logIn(userName, password).then(data => {
-			if (data) {
+		// await logIn(userName, password).then(data => {
+		// 	if (data) {
+		// 		alert("connection successfully");
+		// 		navigate('/businessDetails', { state: { id: data } })
+		// 	}
+		// 	else {
+		// 		alert("admin not defined  you need to application")
+		// 	}
+		// });
+		const sighIn = 'sighIn'
+		try {
+			debugger
+			const res = await axios.post(`https://meetings-test.herokuapp.com/user/signin`,
+				{
+					username: userName,
+					password: password
+				});
+			if (res.data !== "") {
 				alert("connection successfully");
-				navigate('/businessDetails', { state: { id: data } })
+				navigate('/businessDetails', { state: { id: res.data } })
 			}
-			else {
+			else
 				alert("admin not defined  you need to application")
-			}
-		});
-	}
-
-	async function onRegister() {
-		await Register(firstName, lastName, userName, password, email, phonNumber).then(()=>{
-			window.location.reload();
-		})
+		} catch (err) {
+			console.log(err)
+		}
 	}
 
 	return (
@@ -60,42 +65,6 @@ export function LoginAdmin() {
 							<input className="button" value="Sign In" onClick={() => onLogIn()} />
 						</div>
 						<div className="hr"></div>
-						{/* <div className="foot-lnk">
-					<a href="#forgot">Forgot Password?</a>
-				</div> */}
-					</div>
-					<div className="sign-up-htm" >
-						<div className="group">
-							<label htmlFor="user" className="label">first name</label>
-							<input id="user" type="text" className="input" onChange={firstName => setFirstName(firstName.target.value)} />
-						</div>
-						<div className="group">
-							<label htmlFor="user" className="label">last name</label>
-							<input id="user" type="text" className="input" onChange={lastName => setLastName(lastName.target.value)} />
-						</div>
-						<div className="group">
-							<label htmlFor="user" className="label">user name</label>
-							<input id="user" type="text" className="input" onChange={userName => setUserName(userName.target.value)} />
-						</div>
-						<div className="group">
-							<label htmlFor="pass" className="label">password</label>
-							<input id="pass" type="password" className="input" data-type="password" onChange={password => setPassword(password.target.value)} />
-						</div>
-						<div className="group">
-							<label htmlFor="pass" className="label">email address</label>
-							<input id="pass" type="text" className="input" onChange={email => setEmail(email.target.value)} />
-						</div>
-						<div className="group">
-							<label htmlFor="pass" className="label">phone number</label>
-							<input id="pass" type="text" className="input" onChange={phoneNumber => setPhoneNumber(phoneNumber.target.value)} />
-						</div>
-						<div className="group">
-							<input className="button" value="Sign Up" onClick={() => onRegister()} />
-						</div>
-						<div className="hr"></div>
-						{/* <div className="foot-lnk">
-					<label htmlFor="tab-1">Already Member?</label>
-				</div> */}
 					</div>
 				</div>
 			</div>
