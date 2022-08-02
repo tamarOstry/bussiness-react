@@ -13,7 +13,7 @@ export const ServicesContext = (props) => {
      function getServices (businessId) {
         try {
             console.log(props.id);
-            getServicesByBusinessId(businessId).then((services) => {
+            getServicesByBusinessId('591b64cc-0a01-4c50-9ffe-03198c4dc7b8').then((services) => {
                 console.log(services);
                 setServices(services);
             });

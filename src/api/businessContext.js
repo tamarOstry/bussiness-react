@@ -13,7 +13,7 @@ export const BusinessContext = (props) => {
 // props.adminId
     const getBusiness = (props) => {
         try {
-            getBusinessByAdminId('7e83d637-c83f-4145-a650-0d3c5adc3199').then((business) => {
+            getBusinessByAdminId('4b9adeb6-65df-4121-92ad-60fe48f687e7').then((business) => {
                 console.log(business);
                 setBusiness(business);
             });
